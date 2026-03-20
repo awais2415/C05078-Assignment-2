@@ -1,0 +1,66 @@
+@* Pages/Admin/EditGalleryImage.cshtml - Form to edit an existing gallery image
+   Allows admin to update caption, alt text and replace the image file *@
+
+@page
+@model HunzaHaven.Pages.Admin.EditGalleryImageModel
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize(Roles = "Admin")]
+
+@{
+    ViewData["Title"] = "Edit Gallery Image";
+}
+
+<header class="page-header">
+    <h1>Edit Gallery Image</h1>
+    <p>Update the gallery image details below</p>
+</header>
+
+<section>
+    <div class="admin-form-container">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="form-message error"></div>
+
+            <input type="hidden" asp-for="GalleryImage.Id" />
+
+            <div class="form-group">
+                <label asp-for="GalleryImage.Caption">Caption *</label>
+                <input asp-for="GalleryImage.Caption" />
+                <span asp-validation-for="GalleryImage.Caption" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="GalleryImage.AltText">Alt Text *</label>
+                <input asp-for="GalleryImage.AltText" />
+                <span asp-validation-for="GalleryImage.AltText" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="GalleryImage.DisplayOrder">Display Order</label>
+                <input asp-for="GalleryImage.DisplayOrder" type="number" min="1" />
+            </div>
+
+            @* Show current image *@
+            @if (!string.IsNullOrEmpty(Model.GalleryImage.FileName))
+            {
+                <div class="form-group">
+                    <label>Current Image</label>
+                    <img src="~/images/@Model.GalleryImage.FileName"
+                         alt="@Model.GalleryImage.AltText"
+                         class="admin-preview-img" />
+                </div>
+            }
+
+            <div class="form-group">
+                <label for="ImageUpload">Replace Image (optional)</label>
+                <input type="file" id="ImageUpload" name="ImageUpload" accept="image/*" class="file-input" />
+                <span class="field-hint">Leave blank to keep the current image.</span>
+            </div>
+
+            <div class="admin-form-actions">
+                <button type="submit" class="submit-btn">Save Changes</button>
+                <a href="/Admin/Admin" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>

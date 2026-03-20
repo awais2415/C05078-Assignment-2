@@ -1,0 +1,99 @@
+@* Pages/Shared/_Layout.cshtml - Shared layout template for all pages
+   Contains the common HTML structure, navigation bar and footer.
+   All pages inherit this layout so the design is consistent.
+   Code adapted from Microsoft, 2024
+   https://learn.microsoft.com/en-us/aspnet/core/mvc/views/layout *@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Hunza Haven Guest House - Traditional accommodation in Hunza Valley, Pakistan." />
+    <title>@ViewData["Title"] - Hunza Haven Guest House</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+    @* ---- NAVIGATION BAR ---- *@
+    <nav>
+        <div class="site-name">Hunza Haven Guest House</div>
+
+        @* Hamburger button for mobile responsive menu *@
+        <button class="hamburger" id="hamburger" aria-label="Open navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        @* Main navigation links *@
+        <ul class="nav-links" id="navLinks">
+            <li><a asp-page="/Index" class="@(ViewContext.RouteData.Values["page"]?.ToString() == "/Index" ? "active" : "")">Home</a></li>
+            <li><a asp-page="/PropertyDetails" class="@(ViewContext.RouteData.Values["page"]?.ToString() == "/PropertyDetails" ? "active" : "")">Properties</a></li>
+            <li><a asp-page="/Gallery" class="@(ViewContext.RouteData.Values["page"]?.ToString() == "/Gallery" ? "active" : "")">Gallery</a></li>
+            <li><a asp-page="/Contact" class="@(ViewContext.RouteData.Values["page"]?.ToString() == "/Contact" ? "active" : "")">Contact Us</a></li>
+
+            @* Show Admin link and Logout button if user is authenticated *@
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                <li><a asp-page="/Admin/Admin" class="admin-link">Admin</a></li>
+                <li>
+                    <form method="post" asp-page="/Logout" style="display:inline;">
+                        <button type="submit" class="nav-logout-btn">Logout</button>
+                    </form>
+                </li>
+            }
+            else
+            {
+                @* Show Login link when user is not authenticated *@
+                <li><a asp-page="/Login" class="@(ViewContext.RouteData.Values["page"]?.ToString() == "/Login" ? "active" : "")">Login</a></li>
+            }
+        </ul>
+    </nav>
+    @* End of adapted code *@
+
+    @* ---- MAIN CONTENT AREA ---- *@
+    @* Each page's content is rendered here via RenderBody() *@
+    <main>
+        @RenderBody()
+    </main>
+
+    @* ---- FOOTER ---- *@
+    <footer>
+        <div class="footer-flex">
+            <div class="footer-brand">
+                <h3>Hunza Haven Guest House</h3>
+                <p>Karimabad, Hunza Valley, Gilgit-Baltistan, Pakistan. Est. 1999.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Pages</h4>
+                <ul>
+                    <li><a asp-page="/Index">Home</a></li>
+                    <li><a asp-page="/PropertyDetails">Properties</a></li>
+                    <li><a asp-page="/Gallery">Gallery</a></li>
+                    <li><a asp-page="/Contact">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li><span>Karimabad, Hunza Valley</span></li>
+                    <li><span>Gilgit-Baltistan, Pakistan</span></li>
+                    <li><a href="mailto:info@hunzahaven.pk">info@hunzahaven.pk</a></li>
+                    <li><a href="tel:+92599123456">+92 599 123 456</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Hunza Haven Guest House</p>
+            <p>CO5078 Web Development</p>
+        </div>
+    </footer>
+
+    @* ---- JAVASCRIPT FILES ---- *@
+    <script src="~/js/site.js"></script>
+    @* Render any page-specific scripts *@
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

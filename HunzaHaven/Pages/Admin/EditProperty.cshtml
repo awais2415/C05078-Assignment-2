@@ -1,0 +1,93 @@
+@* Pages/Admin/EditProperty.cshtml - Form to edit an existing property
+   Allows admin to update property details and replace the image *@
+
+@page
+@model HunzaHaven.Pages.Admin.EditPropertyModel
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize(Roles = "Admin")]
+
+@{
+    ViewData["Title"] = "Edit Property";
+}
+
+<header class="page-header">
+    <h1>Edit Property</h1>
+    <p>Update the property details below</p>
+</header>
+
+<section>
+    <div class="admin-form-container">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="form-message error"></div>
+
+            @* Hidden field to pass the property ID *@
+            <input type="hidden" asp-for="Property.Id" />
+
+            <div class="form-group">
+                <label asp-for="Property.Name">Property Name *</label>
+                <input asp-for="Property.Name" />
+                <span asp-validation-for="Property.Name" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Property.Description">Description *</label>
+                <textarea asp-for="Property.Description"></textarea>
+                <span asp-validation-for="Property.Description" class="field-error"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Property.PricePerNight">Price Per Night (&pound;) *</label>
+                    <input asp-for="Property.PricePerNight" type="number" step="0.01" min="1" />
+                    <span asp-validation-for="Property.PricePerNight" class="field-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Property.MaxGuests">Max Guests *</label>
+                    <input asp-for="Property.MaxGuests" type="number" min="1" max="20" />
+                    <span asp-validation-for="Property.MaxGuests" class="field-error"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Property.RoomType">Room Type</label>
+                <select asp-for="Property.RoomType">
+                    <option value="">Select type...</option>
+                    <option value="Standard">Standard</option>
+                    <option value="Deluxe">Deluxe</option>
+                    <option value="Family">Family</option>
+                    <option value="Budget">Budget</option>
+                    <option value="Premium">Premium</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Property.IsAvailable">Available for Booking</label>
+                <input asp-for="Property.IsAvailable" type="checkbox" class="admin-checkbox" />
+            </div>
+
+            @* Show current image if one exists *@
+            @if (!string.IsNullOrEmpty(Model.Property.ImageFileName))
+            {
+                <div class="form-group">
+                    <label>Current Image</label>
+                    <img src="~/images/@Model.Property.ImageFileName"
+                         alt="Current property image"
+                         class="admin-preview-img" />
+                </div>
+            }
+
+            @* Image upload field to replace the current image *@
+            <div class="form-group">
+                <label for="ImageUpload">Replace Image (optional)</label>
+                <input type="file" id="ImageUpload" name="ImageUpload" accept="image/*" class="file-input" />
+                <span class="field-hint">Leave blank to keep the current image.</span>
+            </div>
+
+            <div class="admin-form-actions">
+                <button type="submit" class="submit-btn">Save Changes</button>
+                <a href="/Admin/Admin" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>

@@ -1,0 +1,85 @@
+@* Pages/Index.cshtml - Home page for Hunza Haven Guest House
+   Displays the hero banner, features section and room listings from the database *@
+
+@page
+@model HunzaHaven.Pages.IndexModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+@* ---- HERO BANNER SECTION ---- *@
+<header class="hero">
+    <h1>Welcome to Hunza Haven</h1>
+    <p>A family-run guesthouse in Hunza Valley, Gilgit-Baltistan, Pakistan offering mountain views and traditional hospitality.</p>
+    <a asp-page="/Contact" class="btn">Book a Stay</a>
+    <a asp-page="/PropertyDetails" class="btn">View Properties</a>
+</header>
+
+@* ---- WHY STAY WITH US SECTION ---- *@
+<section>
+    <h2 class="section-title">Why Stay With Us</h2>
+    <p class="section-sub">Experience comfort, culture and stunning scenery</p>
+
+    <div class="cards">
+        <div class="card">
+            <h3>Mountain Views</h3>
+            <p>All rooms overlook the Karakoram mountain range.</p>
+        </div>
+        <div class="card">
+            <h3>Traditional Food</h3>
+            <p>Fresh Hunzai meals prepared daily using local ingredients.</p>
+        </div>
+        <div class="card">
+            <h3>Guided Tours</h3>
+            <p>Visits to local attractions arranged on request.</p>
+        </div>
+    </div>
+</section>
+
+@* ---- OUR ROOMS SECTION - Data loaded from database ---- *@
+<section class="grey">
+    <h2 class="section-title">Our Rooms</h2>
+    <p class="section-sub">Comfortable accommodation with mountain views</p>
+
+    <div class="cards">
+        @* Loop through properties fetched from the database *@
+        @foreach (var property in Model.Properties)
+        {
+            <div class="room-card">
+                @* Display room image if one exists *@
+                @if (!string.IsNullOrEmpty(property.ImageFileName))
+                {
+                    <img src="~/images/@property.ImageFileName"
+                         alt="@property.Name"
+                         class="room-card-img" />
+                }
+                <div class="room-info">
+                    <h3>@property.Name</h3>
+                    <p>@property.Description</p>
+                    <p class="price">From &pound;@property.PricePerNight per night</p>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+@* ---- LOCATION INFO SECTION ---- *@
+<section>
+    <h2 class="section-title">Location</h2>
+    <p class="section-sub">We are in Gilgit-Baltistan, northern Pakistan</p>
+    <div class="cards">
+        <div class="card">
+            <h3>Getting Here</h3>
+            <p>Fly to Gilgit Airport from Islamabad (45 minutes). We offer a free pickup if booked in advance.</p>
+        </div>
+        <div class="card">
+            <h3>Best Time to Visit</h3>
+            <p>Spring (April to May) for apricot blossoms. Summer (June to September) for trekking and clear skies.</p>
+        </div>
+        <div class="card">
+            <h3>Nearby Attractions</h3>
+            <p>Baltit Fort, Altit Fort, Attabad Lake and Eagle's Nest viewpoint are all within easy reach.</p>
+        </div>
+    </div>
+</section>

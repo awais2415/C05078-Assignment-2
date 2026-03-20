@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="3aeaa3fc-30bc-4e4c-a69d-6773a7c91a0b" name="2415694" url="2415694.win.studentwebserver.co.uk">
+        <fileTransfer rootFolder="/httpdocs/CO5078" host="plesk.chester.network" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

@@ -1,0 +1,116 @@
+@* Pages/PropertyDetails.cshtml - Property listings page
+   Displays all property details retrieved from the SQL Server database *@
+
+@page
+@model HunzaHaven.Pages.PropertyDetailsModel
+
+@{
+    ViewData["Title"] = "Property Details";
+}
+
+@* ---- PAGE HEADER ---- *@
+<header class="page-header">
+    <h1>Our Properties</h1>
+    <p>Browse our rooms and find the perfect accommodation for your stay</p>
+</header>
+
+@* ---- PROPERTY LISTINGS SECTION ---- *@
+<section>
+    <h2 class="section-title">Available Rooms</h2>
+    <p class="section-sub">All rooms include complimentary breakfast and mountain views</p>
+
+    @* Check if any properties were loaded from the database *@
+    @if (Model.Properties.Any())
+    {
+        <div class="property-grid">
+            @* Loop through each property from the database *@
+            @foreach (var property in Model.Properties)
+            {
+                <div class="property-card">
+                    @* Display property image *@
+                    @if (!string.IsNullOrEmpty(property.ImageFileName))
+                    {
+                        <img src="~/images/@property.ImageFileName"
+                             alt="@property.Name - @property.RoomType room"
+                             class="property-card-img" />
+                    }
+                    else
+                    {
+                        <div class="property-card-placeholder">No Image Available</div>
+                    }
+
+                    <div class="property-card-body">
+                        <h3>@property.Name</h3>
+
+                        @* Room type badge *@
+                        @if (!string.IsNullOrEmpty(property.RoomType))
+                        {
+                            <span class="room-badge">@property.RoomType</span>
+                        }
+
+                        <p class="property-desc">@property.Description</p>
+
+                        <div class="property-meta">
+                            <span class="property-guests">Up to @property.MaxGuests guest(s)</span>
+                            <span class="property-price">&pound;@property.PricePerNight <small>per night</small></span>
+                        </div>
+
+                        @* Availability badge *@
+                        @if (property.IsAvailable)
+                        {
+                            <span class="availability available">Available</span>
+                        }
+                        else
+                        {
+                            <span class="availability unavailable">Unavailable</span>
+                        }
+
+                        @* Email property enquiry link - opens the user's email client *@
+                        <a href="mailto:info@hunzahaven.pk?subject=Enquiry about @property.Name&body=Hello, I am interested in the @property.Name. Please send me more details."
+                           class="btn email-btn">
+                            Email Enquiry
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        @* Message shown if no properties are in the database *@
+        <p class="no-results">No properties available at this time. Please check back later.</p>
+    }
+</section>
+
+@* ---- ABOUT SECTION ---- *@
+<section class="grey">
+    <h2 class="section-title">About Hunza Haven</h2>
+    <p class="section-sub">Our story and our team</p>
+
+    <div class="about-flex">
+        <figure>
+            <img src="~/images/image7.jpg"
+                 alt="Hunza Haven Guest House exterior view"
+                 class="about-img" />
+        </figure>
+        <div class="about-text">
+            <h2>Our Story</h2>
+            <p>Hunza Haven Guest House was opened by the Baig family in 1999. We are based in Karimabad, Hunza Valley, at 2,438 metres above sea level.</p>
+            <p>Our building is made using traditional Hunza stone and wood. Baltit Fort and the main bazaar are just a short walk away.</p>
+            <div class="stats">
+                <div class="stat">
+                    <strong>25+</strong>
+                    <span>Years Open</span>
+                </div>
+                <div class="stat">
+                    <strong>1500+</strong>
+                    <span>Guests</span>
+                </div>
+                <div class="stat">
+                    <strong>12</strong>
+                    <span>Rooms</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
