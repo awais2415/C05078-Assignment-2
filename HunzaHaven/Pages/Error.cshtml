@@ -1,0 +1,23 @@
+@* Pages/Error.cshtml - Generic error page displayed when an unhandled error occurs *@
+
+@page
+@model HunzaHaven.Pages.ErrorModel
+
+@{
+    ViewData["Title"] = "Error";
+}
+
+<header class="page-header">
+    <h1>Something went wrong</h1>
+    <p>An unexpected error occurred. Please try again later.</p>
+</header>
+
+<section>
+    <div class="login-container">
+        <div class="login-box">
+            <h2>Error</h2>
+            <p>We are sorry for the inconvenience. Please return to the home page.</p>
+            <a href="/" class="btn">Go to Home Page</a>
+        </div>
+    </div>
+</section>

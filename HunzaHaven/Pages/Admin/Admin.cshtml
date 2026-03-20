@@ -1,0 +1,138 @@
+@* Pages/Admin/Admin.cshtml - Admin dashboard page
+   Restricted to authenticated admin users only.
+   Provides CRUD operations for properties and gallery images. *@
+
+@page
+@model HunzaHaven.Pages.Admin.AdminModel
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize(Roles = "Admin")]
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+@* ---- PAGE HEADER ---- *@
+<header class="page-header">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome, @User.Identity?.Name. Manage properties and gallery images below.</p>
+</header>
+
+@* ---- MANAGE PROPERTIES SECTION ---- *@
+<section>
+    <h2 class="section-title">Manage Properties</h2>
+    <p class="section-sub">Add, edit or delete property listings</p>
+
+    @* Success/Error messages *@
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="form-message success admin-msg" role="alert">@Model.Message</div>
+    }
+
+    @* Button to navigate to the Add Property page *@
+    <div class="admin-actions">
+        <a href="/Admin/AddProperty" class="btn admin-btn">+ Add New Property</a>
+    </div>
+
+    @* Table of all properties *@
+    @if (Model.Properties.Any())
+    {
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Price/Night</th>
+                        <th>Max Guests</th>
+                        <th>Available</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var property in Model.Properties)
+                    {
+                        <tr>
+                            <td>
+                                @if (!string.IsNullOrEmpty(property.ImageFileName))
+                                {
+                                    <img src="~/images/@property.ImageFileName"
+                                         alt="@property.Name"
+                                         class="admin-thumb" />
+                                }
+                                else
+                                {
+                                    <span class="no-img">No image</span>
+                                }
+                            </td>
+                            <td>@property.Name</td>
+                            <td>@property.RoomType</td>
+                            <td>&pound;@property.PricePerNight</td>
+                            <td>@property.MaxGuests</td>
+                            <td>@(property.IsAvailable ? "Yes" : "No")</td>
+                            <td class="admin-actions-cell">
+                                <a href="/Admin/EditProperty?id=@property.Id" class="btn btn-small">Edit</a>
+                                <a href="/Admin/DeleteProperty?id=@property.Id" class="btn btn-small btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="no-results">No properties found. Add one using the button above.</p>
+    }
+</section>
+
+@* ---- MANAGE GALLERY IMAGES SECTION ---- *@
+<section class="grey">
+    <h2 class="section-title">Manage Gallery</h2>
+    <p class="section-sub">Add or remove gallery images</p>
+
+    <div class="admin-actions">
+        <a href="/Admin/AddGalleryImage" class="btn admin-btn">+ Add Gallery Image</a>
+    </div>
+
+    @if (Model.GalleryImages.Any())
+    {
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Caption</th>
+                        <th>Alt Text</th>
+                        <th>Order</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var image in Model.GalleryImages)
+                    {
+                        <tr>
+                            <td>
+                                <img src="~/images/@image.FileName"
+                                     alt="@image.AltText"
+                                     class="admin-thumb" />
+                            </td>
+                            <td>@image.Caption</td>
+                            <td>@image.AltText</td>
+                            <td>@image.DisplayOrder</td>
+                            <td class="admin-actions-cell">
+                                <a href="/Admin/EditGalleryImage?id=@image.Id" class="btn btn-small">Edit</a>
+                                <a href="/Admin/DeleteGalleryImage?id=@image.Id" class="btn btn-small btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="no-results">No gallery images found.</p>
+    }
+</section>

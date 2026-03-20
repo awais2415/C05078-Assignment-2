@@ -1,0 +1,173 @@
+@* Pages/Contact.cshtml - Contact page with form and interactive map
+   Includes server-side validation, email link and Google Maps embed *@
+
+@page
+@model HunzaHaven.Pages.ContactModel
+
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+@* ---- PAGE HEADER ---- *@
+<header class="page-header">
+    <h1>Contact Us</h1>
+    <p>Send us a message to make a booking or ask a question</p>
+</header>
+
+@* ---- CONTACT FORM AND INFO SECTION ---- *@
+<section>
+    <div class="contact-flex">
+
+        @* Contact information panel *@
+        <div class="contact-info">
+            <h2>Our Details</h2>
+            <p>We are happy to help with bookings, trekking packages or general questions about visiting Hunza Valley.</p>
+
+            <address>
+                <div class="contact-item">
+                    <strong>Address</strong>
+                    <span>Karimabad, Hunza Valley, Gilgit-Baltistan, Pakistan</span>
+                </div>
+                <div class="contact-item">
+                    <strong>Phone</strong>
+                    <a href="tel:+92599123456">+92 599 123 456</a>
+                </div>
+                <div class="contact-item">
+                    <strong>Email</strong>
+                    @* Email link - clicking opens the user's email client *@
+                    <a href="mailto:info@hunzahaven.pk">info@hunzahaven.pk</a>
+                </div>
+                <div class="contact-item">
+                    <strong>Reception Hours</strong>
+                    <span>Every day: 8:00am to 9:00pm (Pakistan Time)</span>
+                </div>
+                <div class="contact-item">
+                    <strong>Nearest Airport</strong>
+                    <span>Gilgit Airport (GIL) - approximately 105km</span>
+                </div>
+            </address>
+        </div>
+
+        @* Contact form with server-side validation using tag helpers *@
+        <div class="form-box">
+            <h3>Send a Message</h3>
+
+            @* Display success message if form was submitted successfully *@
+            @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+            {
+                <div class="form-message success" role="alert">@Model.SuccessMessage</div>
+            }
+
+            @* Contact form - posts back to the same page *@
+            <form method="post">
+                @* Validation summary shows all errors at the top *@
+                <div asp-validation-summary="ModelOnly" class="form-message error"></div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="ContactForm.FullName">Full Name *</label>
+                        <input asp-for="ContactForm.FullName" placeholder="Your name" />
+                        <span asp-validation-for="ContactForm.FullName" class="field-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ContactForm.Email">Email *</label>
+                        <input asp-for="ContactForm.Email" placeholder="your@email.com" />
+                        <span asp-validation-for="ContactForm.Email" class="field-error"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="ContactForm.CheckIn">Check-in Date</label>
+                        <input asp-for="ContactForm.CheckIn" type="date" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ContactForm.CheckOut">Check-out Date</label>
+                        <input asp-for="ContactForm.CheckOut" type="date" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ContactForm.EnquiryType">Enquiry Type</label>
+                    <select asp-for="ContactForm.EnquiryType">
+                        <option value="">Select...</option>
+                        <option value="booking">Room Booking</option>
+                        <option value="trek">Trekking Package</option>
+                        <option value="transfer">Airport Transfer</option>
+                        <option value="other">General Question</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ContactForm.Message">Message *</label>
+                    <textarea asp-for="ContactForm.Message" placeholder="Write your message here..."></textarea>
+                    <span asp-validation-for="ContactForm.Message" class="field-error"></span>
+                </div>
+
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+
+    </div>
+</section>
+
+@* ---- MAP SECTION ---- *@
+@* Google Maps Embed API used below.
+   Google. (2024). Maps Embed API. Google Developers.
+   https://developers.google.com/maps/documentation/embed/get-started *@
+<section class="grey">
+    <h2 class="section-title">Find Us</h2>
+    <p class="section-sub">We are located in Karimabad, Hunza Valley, northern Pakistan</p>
+
+    <div class="map-wrapper">
+        @* Noscript tag provides a static fallback if JavaScript is disabled *@
+        <noscript>
+            <p class="map-fallback">
+                <img src="~/images/image6.jpg"
+                     alt="Map showing the location of Hunza Haven Guest House in Karimabad, Hunza Valley, Pakistan"
+                     style="width:100%; max-height:360px; object-fit:cover;" />
+                <br />
+                JavaScript is disabled. Above is a static image of our location.
+                We are in Karimabad, Hunza Valley, Gilgit-Baltistan, Pakistan.
+            </p>
+        </noscript>
+
+        @* Interactive Google Maps embed showing the guesthouse location *@
+        <iframe
+            id="googleMap"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13205.793831432707!2d74.6446!3d36.3152!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38e84d9a8a2e3e91%3A0xbeeb1cfec63cb5a5!2sKarimabad%2C%20Hunza%2C%20Gilgit-Baltistan%2C%20Pakistan!5e0!3m2!1sen!2suk!4v1700000000000!5m2!1sen!2suk"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Map of Karimabad, Hunza Valley, Pakistan"
+            aria-label="Google Map showing Karimabad, Hunza Valley, Pakistan">
+        </iframe>
+    </div>
+
+    <p class="ref-note">
+        Google. (2024). <em>Google Maps - Karimabad, Hunza Valley</em> [Map].
+        <a href="https://maps.google.com" target="_blank" rel="noopener">https://maps.google.com</a>
+        | Map data &copy; 2024 Google.
+    </p>
+</section>
+
+@* ---- COMMON QUESTIONS SECTION ---- *@
+<section>
+    <h2 class="section-title">Common Questions</h2>
+    <p class="section-sub">Things guests often ask us before visiting</p>
+
+    <div class="cards">
+        <div class="card">
+            <h3>Do I need a permit?</h3>
+            <p>Most of Hunza Valley does not require a permit. Some border areas do and we can help arrange this.</p>
+        </div>
+        <div class="card">
+            <h3>Is Wi-Fi available?</h3>
+            <p>Yes, we have free Wi-Fi. Speeds can vary in the mountains but it works for browsing and messaging.</p>
+        </div>
+        <div class="card">
+            <h3>What currency is used?</h3>
+            <p>Pakistani Rupees (PKR). ATMs are in Karimabad town. We do not accept card payments currently.</p>
+        </div>
+    </div>
+</section>
