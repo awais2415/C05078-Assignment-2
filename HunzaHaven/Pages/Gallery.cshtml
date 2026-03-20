@@ -1,0 +1,125 @@
+@* Pages/Gallery.cshtml - Gallery page with image carousel
+   Displays gallery images from the database in a JavaScript-powered carousel *@
+
+@page
+@model HunzaHaven.Pages.GalleryModel
+
+@{
+    ViewData["Title"] = "Gallery";
+}
+
+@* ---- PAGE HEADER ---- *@
+<header class="page-header">
+    <h1>Gallery</h1>
+    <p>Photos of the guesthouse and the surrounding Hunza Valley</p>
+</header>
+
+@* ---- IMAGE CAROUSEL SECTION ---- *@
+@* JavaScript carousel adapted from W3Schools, 2024
+   https://www.w3schools.com/howto/howto_js_slideshow.asp *@
+<section>
+    <h2 class="section-title">Photo Slideshow</h2>
+    <p class="section-sub">Use the arrows to browse our photos</p>
+
+    @if (Model.GalleryImages.Any())
+    {
+        <div class="carousel-container" aria-label="Image gallery carousel" role="region">
+            @* Previous button *@
+            <button class="carousel-btn carousel-prev" id="prevBtn"
+                    aria-label="Previous image" type="button">&lsaquo;</button>
+
+            @* Carousel slides - each image from the database becomes a slide *@
+            <div class="carousel-track" id="carouselTrack">
+                @for (int i = 0; i < Model.GalleryImages.Count; i++)
+                {
+                    var image = Model.GalleryImages[i];
+                    <div class="carousel-slide @(i == 0 ? "active" : "")"
+                         data-index="@i"
+                         role="group"
+                         aria-label="Slide @(i + 1) of @Model.GalleryImages.Count">
+                        <img src="~/images/@image.FileName"
+                             alt="@image.AltText"
+                             class="carousel-img" />
+                        <p class="carousel-caption">@image.Caption</p>
+                    </div>
+                }
+            </div>
+
+            @* Next button *@
+            <button class="carousel-btn carousel-next" id="nextBtn"
+                    aria-label="Next image" type="button">&rsaquo;</button>
+
+            @* Carousel indicator dots *@
+            <div class="carousel-dots" id="carouselDots">
+                @for (int i = 0; i < Model.GalleryImages.Count; i++)
+                {
+                    <button class="carousel-dot @(i == 0 ? "active" : "")"
+                            data-index="@i"
+                            aria-label="Go to slide @(i + 1)"
+                            type="button"></button>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <p class="no-results">No gallery images available at this time.</p>
+    }
+</section>
+@* End of adapted code *@
+
+@* ---- GALLERY GRID SECTION ---- *@
+<section class="grey">
+    <h2 class="section-title">All Photos</h2>
+    <p class="section-sub">Click any image to view it in the slideshow</p>
+
+    <div class="gallery">
+        @foreach (var image in Model.GalleryImages)
+        {
+            <figure>
+                <img src="~/images/@image.FileName"
+                     alt="@image.AltText"
+                     class="gallery-img" />
+                <figcaption>@image.Caption</figcaption>
+            </figure>
+        }
+    </div>
+
+    <p class="ref-note">
+        Microsoft. (2024). AI-generated images of Hunza Valley [AI-generated images]. Microsoft Copilot.
+        <a href="https://copilot.microsoft.com" target="_blank" rel="noopener">https://copilot.microsoft.com</a>
+        - All images are AI-generated based on descriptions of the guesthouse and surrounding area.
+    </p>
+</section>
+
+@* ---- OUR TEAM SECTION ---- *@
+<section>
+    <h2 class="section-title">Our Team</h2>
+    <p class="section-sub">The people who look after our guests</p>
+    <div class="team-cards">
+        <div class="team-card">
+            <div class="team-avatar" role="img" aria-label="Ahmad Baig photo placeholder"></div>
+            <h3>Ahmad Baig</h3>
+            <p class="role">Founder</p>
+            <p>Ahmad has run the guesthouse since 1999.</p>
+        </div>
+        <div class="team-card">
+            <div class="team-avatar" role="img" aria-label="Fatima Baig photo placeholder"></div>
+            <h3>Fatima Baig</h3>
+            <p class="role">Head Chef</p>
+            <p>Fatima cooks all the traditional meals.</p>
+        </div>
+        <div class="team-card">
+            <div class="team-avatar" role="img" aria-label="Karim Wali photo placeholder"></div>
+            <h3>Karim Wali</h3>
+            <p class="role">Trek Guide</p>
+            <p>Karim leads all the mountain treks.</p>
+        </div>
+        <div class="team-card">
+            <div class="team-avatar" role="img" aria-label="Sana Mir photo placeholder"></div>
+            <h3>Sana Mir</h3>
+            <p class="role">Reception</p>
+            <p>Sana helps guests with their stay.</p>
+        </div>
+    </div>
+</section>

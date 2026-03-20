@@ -1,0 +1,54 @@
+@* Pages/Admin/AddGalleryImage.cshtml - Form to add a new gallery image
+   Allows admin to upload an image with caption and alt text *@
+
+@page
+@model HunzaHaven.Pages.Admin.AddGalleryImageModel
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize(Roles = "Admin")]
+
+@{
+    ViewData["Title"] = "Add Gallery Image";
+}
+
+<header class="page-header">
+    <h1>Add Gallery Image</h1>
+    <p>Upload a new image to the gallery</p>
+</header>
+
+<section>
+    <div class="admin-form-container">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="form-message error"></div>
+
+            <div class="form-group">
+                <label asp-for="GalleryImage.Caption">Caption *</label>
+                <input asp-for="GalleryImage.Caption" placeholder="e.g. Sunrise Over the Valley" />
+                <span asp-validation-for="GalleryImage.Caption" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="GalleryImage.AltText">Alt Text *</label>
+                <input asp-for="GalleryImage.AltText" placeholder="Describe the image for accessibility" />
+                <span asp-validation-for="GalleryImage.AltText" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="GalleryImage.DisplayOrder">Display Order</label>
+                <input asp-for="GalleryImage.DisplayOrder" type="number" min="1" />
+            </div>
+
+            @* Image upload field - required for new gallery images *@
+            <div class="form-group">
+                <label for="ImageUpload">Upload Image *</label>
+                <input type="file" id="ImageUpload" name="ImageUpload" accept="image/*" class="file-input" required />
+                <span class="field-hint">Accepted formats: JPG, PNG, GIF. Max 5MB.</span>
+            </div>
+
+            <div class="admin-form-actions">
+                <button type="submit" class="submit-btn">Add Image</button>
+                <a href="/Admin/Admin" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
