@@ -1,0 +1,17 @@
+## .gitignore for ASP.NET Core Razor Pages project
+
+# Build output
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+
+# NuGet
+packages/
+
+# OS files
+.DS_Store
+Thumbs.db
